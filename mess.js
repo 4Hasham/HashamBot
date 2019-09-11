@@ -9,7 +9,6 @@ module.exports = (mess) => {
     var punctuationless = tempp.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
     var messs = punctuationless.replace(/\s{2,}/g, " ");
     var mes = messs.toLowerCase();
-    console.log(mes);
     var cut;
     if(mes.includes('say')) {
         cut = mes.split('say');
@@ -18,9 +17,7 @@ module.exports = (mess) => {
 
     for(x in qna) {
         var mes_s = mes.split(' ');
-        console.log(mes_s);
         var x_s = x.split(' ');
-        console.log(x_s);
         var simc = 0;
         for(var i = 0; i < mes_s.length; i++) {
             for(var j = 0; j < x_s.length; j++) {
@@ -31,7 +28,6 @@ module.exports = (mess) => {
             }
             if(simc >= (mes_s.length)/2) return qna[x];
         }
-        console.log(simc);
     }
 
     if(mes.includes('vs') === true || mes.includes(" v ") === true) {
@@ -70,24 +66,6 @@ module.exports = (mess) => {
                 }
             }, (err) => { if(err) throw err; });
         }
-        else if(mes.includes('upcoming') === true) {
-            var some = mes.split('upcoming ');
-            let matches = util.promisify(cricapi.matches);
-            let ma = matches();
-            return ma.then((data) => {
-                var dataa = JSON.parse(data);
-                var count = 0;
-                var temp = '';
-                for(var i = 0; i < dataa.matches.length; i++) {
-                    if(some[1].toLowerCase() == (dataa.matches[i].type).toLowerCase()) {
-                        temp += dataa.matches[i]['team-1'] + " vs" + dataa.matches[i]['team-2'] + " on " + dataa.matches[i]['dateTimeGMT'] + ".\n\n";
-                        if(count != 6) count++;
-                        else break;
-                    }
-                    return temp;
-                }
-            }, (err) => { if(err) throw err; });
-        }
         else {
             var ss;
             if(mes.includes('vs')) ss = mess.split(' vs ')
@@ -107,6 +85,21 @@ module.exports = (mess) => {
                 }
             }, (err) => { if(err) throw err; });
         }
+    }       
+    else if(mes.includes('upcoming') === true) {
+        var some = mes.split('upcoming ');
+        let matches = util.promisify(cricapi.matches);
+        let ma = matches();
+        return ma.then((data) => {
+            var dataa = JSON.parse(data);
+            var temp = "";
+            for(var i = 0; i < dataa.matches.length; i++) {
+                if(some[1].toLowerCase() == (dataa.matches[i].type).toLowerCase()) {
+                    temp += dataa.matches[i]['team-1'] + " vs " + dataa.matches[i]['team-2'] + " on " + dataa.matches[i]['dateTimeGMT'] + ".\n\n";
+                    return JSON.stringify(temp);
+                }
+            }
+        }, (err) => { if(err) throw err; });
     }
 
     let playerFinder = util.promisify(cricapi.playerFinder);
