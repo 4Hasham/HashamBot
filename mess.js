@@ -15,6 +15,7 @@ module.exports = (mess) => {
         cut = mes.split('say');
         return JSON.stringify(cut[1]);
     }
+
     for(x in qna) {
         var mes_s = mes.split(' ');
         console.log(mes_s);
@@ -32,6 +33,7 @@ module.exports = (mess) => {
         }
         console.log(simc);
     }
+
     if(mes.includes('vs') === true || mes.includes(" v ") === true) {
         //var tempo = new Object();
         if (mes.includes('live') || mes.includes('score')) {
@@ -65,6 +67,24 @@ module.exports = (mess) => {
                     if((dataa.data[i].name).match(ssssss[0]) && (dataa.data[i].name).match(ssssss[1]) && (dataa.data[i].name).includes(ssssss[0]) === true && (dataa.data[i].name).includes(ssssss[1]) === true) {
                         return JSON.stringify(dataa.data[i].name + ' on ' + dataa.data[i].date);
                     }
+                }
+            }, (err) => { if(err) throw err; });
+        }
+        else if(mes.includes('upcoming') === true) {
+            var some = mes.split('upcoming ');
+            let matches = util.promisify(cricapi.matches);
+            let ma = matches();
+            return ma.then((data) => {
+                var dataa = JSON.parse(data);
+                var count = 0;
+                var temp = '';
+                for(var i = 0; i < dataa.matches.length; i++) {
+                    if(some[1].toLowerCase() == (dataa.matches[i].type).toLowerCase()) {
+                        temp += dataa.matches[i]['team-1'] + " vs" + dataa.matches[i]['team-2'] + " on " + dataa.matches[i]['dateTimeGMT'] + ".\n\n";
+                        if(count != 6) count++;
+                        else break;
+                    }
+                    return temp;
                 }
             }, (err) => { if(err) throw err; });
         }
