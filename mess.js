@@ -1,4 +1,5 @@
 const qna = require("./qna.json");
+const quotes = require('./quotes.json');
 const cricapi = require('cricapi');
 const util = require('util');
 
@@ -100,6 +101,11 @@ module.exports = (mess) => {
                 }
             }
         }, (err) => { if(err) throw err; });
+    }
+    else if(mes.includes('tell me a quote') === true) {
+        var rando = Math.floor(Math.random() * 27);
+        console.log(rando);
+        return JSON.stringify(quotes.quotes[rando]['legend'] + ' said, "' + quotes.quotes[rando]['cont'] + '"');
     }
 
     let playerFinder = util.promisify(cricapi.playerFinder);
