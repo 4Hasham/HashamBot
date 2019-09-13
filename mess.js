@@ -7,7 +7,7 @@ cricapi.setAPIKey('9YinLGTZ9GdrodAPoyIf1AmPF9F2');
 
 module.exports = (mess) => {
     var tempp = mess;
-    var punctuationless = tempp.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+    var punctuationless = tempp.replace(/[?.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
     var messs = punctuationless.replace(/\s{2,}/g, " ");
     var mes = messs.toLowerCase();
     var cut;
