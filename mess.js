@@ -3,7 +3,7 @@ const quotes = require('./quotes.json');
 const cricapi = require('cricapi');
 const util = require('util');
 
-cricapi.setAPIKey('9YinLGTZ9GdrodAPoyIf1AmPF9F2');
+cricapi.setAPIKey(process.env.API_KEY);
 
 module.exports = (mess) => {
     var tempp = mess;
